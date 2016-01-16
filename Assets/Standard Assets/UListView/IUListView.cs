@@ -10,6 +10,7 @@ namespace NSUListView
 		[Tooltip("List Item Object, must set")]
 		public GameObject 			item;
 		public Vector2				pad;
+		public bool					needMask;
 
 		protected ScrollRect 		scrollRect;
 		protected bool				initialized = false;
@@ -53,6 +54,14 @@ namespace NSUListView
 
 			// record the max shown item num
 			maxShowNum = GetMaxShowItemNum();
+
+			// add mask
+			if (needMask) 
+			{
+				Image image = gameObject.AddComponent(typeof(Image)) as Image;
+				image.color = new Color32(0, 0, 0, 5);
+				gameObject.AddComponent(typeof(Mask));
+			}
 
 			initialized = true;
 		}
