@@ -2,10 +2,10 @@
 This is a ListView solution for Unity’s new UI(uGUI) system.
 This solution provides following conveniences:
 
--Attach scrollview related components automatically
--Resize scrollview length as desired automatically
--Reuse list items gameobject
--Easy use
+- Attach scrollview related components automatically
+- Resize scrollview length as desired automatically
+- Reuse list items gameobject
+- Easy use
 
 ##Usage
 
