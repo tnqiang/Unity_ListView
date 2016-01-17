@@ -69,10 +69,10 @@ namespace NSUListView
 			switch (layout)
 			{
 			case Layout.Vertical:
-				index = (int)(anchorPosition.y / itemSize.y);
+				index = (int)(anchorPosition.y / (itemSize.y + pad.y));
 				break;
 			case Layout.Horizontal:
-				index = (int)(anchorPosition.x / itemSize.x);
+				index = (int)(anchorPosition.x / (itemSize.x + pad.x));
 				break;
 			}
 

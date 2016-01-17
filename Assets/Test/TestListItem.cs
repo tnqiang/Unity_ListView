@@ -10,7 +10,7 @@ public class TestListItem : MonoBehaviour
 	void Start()
 	{
 		List<object> lstData = new List<object> ();
-		for (int i=0; i<10; ++i) {
+		for (int i=0; i<100; ++i) {
 			lstData.Add (i);
 		}
 		listView.SetData (lstData);
