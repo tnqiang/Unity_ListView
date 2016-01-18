@@ -19,7 +19,6 @@ namespace NSUListView
 		protected Vector2			itemSize;
 		protected int				lastStartInex = 0;
 		protected List<object>		lstData;
-		protected int				maxShowNum;
 
 		public virtual void Init()
 		{
@@ -51,9 +50,6 @@ namespace NSUListView
 			scrollRectSize = scrollRectTransform.sizeDelta;
 			RectTransform itemRectTransform = item.transform as RectTransform;
 			itemSize = itemRectTransform.sizeDelta;
-
-			// record the max shown item num
-			maxShowNum = GetMaxShowItemNum();
 
 			// add mask
 			if (needMask) 
@@ -93,7 +89,7 @@ namespace NSUListView
 
 			// set the item postion and data
 			int startIndex = GetStartIndex ();
-			for (int i=0; i<maxShowNum && startIndex + i < lstData.Count; ++i)
+			for (int i=0; i<GetMaxShowItemNum() && startIndex + i < lstData.Count; ++i)
 			{
 				GameObject go = GetItemGameObject(i);
 				RectTransform trans = go.transform as RectTransform;

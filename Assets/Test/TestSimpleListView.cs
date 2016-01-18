@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using NSUListView;
 
-public class TestListItem : MonoBehaviour
+public class TestSimpleListView : MonoBehaviour
 {
 	public USimpleListView listView;
-
+	
 	void Start()
 	{
 		List<object> lstData = new List<object> ();
