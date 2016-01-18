@@ -5,7 +5,7 @@ This solution provides following conveniences:
 - Attach scrollview related components automatically
 - Resize scrollview length as desired automatically
 - Reuse list items gameobject
-- Easy use
+- Easy to use and easy to extend
 
 ##Usage
 
