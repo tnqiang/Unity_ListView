@@ -13,6 +13,7 @@ namespace NSUListView
 
 		private int 				numPerRow;
 		private	int					numPerColumn;
+		private	Vector2				padding;
 
 		public override void Init ()
 		{
@@ -29,11 +30,25 @@ namespace NSUListView
 				break;
 			}
 			lstItems = new List<GameObject> ();
-			numPerRow = (int)(scrollRectSize.x / (itemSize.x + pad.x));
-			numPerColumn = (int)(scrollRectSize.y / (itemSize.y + pad.y));
+
+			// record max numbers per row/column
+			numPerRow = (int)(scrollRectSize.x / (itemSize.x + spacing.x));
+			numPerColumn = (int)(scrollRectSize.y / (itemSize.y + spacing.y));
 			if (numPerRow < 1 || numPerColumn < 1) 
 			{
 				Debug.LogError("ScrollRect size is too small to contain even one item");
+			}
+
+			// to make items center aligned
+			padding = Vector2.zero;
+			switch(layout)
+			{
+			case Layout.Horizontal:
+				padding.y = -(int)(scrollRectSize.y % itemSize.y) / 2;
+				break;
+			case Layout.Vertical:
+				padding.x = (int)(scrollRectSize.x % itemSize.x) / 2;
+				break;
 			}
 		}
 
@@ -62,10 +77,10 @@ namespace NSUListView
 			switch (layout)
 			{
 			case Layout.Vertical:
-				index = (int)(anchorPosition.y / (itemSize.y + pad.y)) * numPerRow;
+				index = (int)(anchorPosition.y / (itemSize.y + spacing.y)) * numPerRow;
 				break;
 			case Layout.Horizontal:
-				index = (int)(anchorPosition.x / (itemSize.x + pad.x)) * numPerColumn;
+				index = (int)(anchorPosition.x / (itemSize.x + spacing.x)) * numPerColumn;
 				break;
 			}
 
@@ -83,18 +98,18 @@ namespace NSUListView
 			{
 				int offsetIndex = index % numPerColumn;
 				basePos.x = -contentRectSize.x / 2 + itemSize.x / 2;
-				offset.x = (index / numPerColumn) * (itemSize.x + pad.x);
-				offset.y = contentRectSize.y / 2 - itemSize.y / 2 - offsetIndex * (itemSize.y + pad.y);
+				offset.x = (index / numPerColumn) * (itemSize.x + spacing.x);
+				offset.y = contentRectSize.y / 2 - itemSize.y / 2 - offsetIndex * (itemSize.y + spacing.y);
 			} 
 			else 
 			{
 				int offsetIndex = index % numPerColumn;
 				basePos.y = contentRectSize.y / 2 - itemSize.y / 2;
-				offset.y = -(index / numPerRow) * (itemSize.y + pad.y);
-				offset.x = -(contentRectSize.x - itemSize.x)/2 + offsetIndex * (itemSize.x + pad.x);
+				offset.y = -(index / numPerRow) * (itemSize.y + spacing.y);
+				offset.x = -(contentRectSize.x - itemSize.x)/2 + offsetIndex * (itemSize.x + spacing.x);
 			}
 
-			return basePos + offset;
+			return basePos + offset + padding;
 		}
 
 		public override Vector2 GetContentSize()
@@ -106,11 +121,11 @@ namespace NSUListView
 			{
 			case Layout.Horizontal:
 				count = (count + numPerColumn - 1) / numPerColumn;
-				size.x = itemSize.x * count + pad.x *( count > 0 ? count -1 : count );
+				size.x = itemSize.x * count + spacing.x *( count > 0 ? count -1 : count );
 				break;
 			case Layout.Vertical:
 				count = (count + numPerRow - 1) / numPerRow;
-				size.y = itemSize.y * count + pad.y * ( count > 0 ? count - 1 : count );
+				size.y = itemSize.y * count + spacing.y * ( count > 0 ? count - 1 : count );
 				break;
 			}
 			return size;

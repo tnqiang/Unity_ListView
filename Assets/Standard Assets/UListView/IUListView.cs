@@ -9,7 +9,7 @@ namespace NSUListView
 	{
 		[Tooltip("List Item Object, must set")]
 		public GameObject 			item;
-		public Vector2				pad;
+		public Vector2				spacing;
 		public bool					needMask;
 
 		protected ScrollRect 		scrollRect;

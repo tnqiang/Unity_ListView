@@ -69,10 +69,10 @@ namespace NSUListView
 			switch (layout)
 			{
 			case Layout.Vertical:
-				index = (int)(anchorPosition.y / (itemSize.y + pad.y));
+				index = (int)(anchorPosition.y / (itemSize.y + spacing.y));
 				break;
 			case Layout.Horizontal:
-				index = (int)(anchorPosition.x / (itemSize.x + pad.x));
+				index = (int)(anchorPosition.x / (itemSize.x + spacing.x));
 				break;
 			}
 
@@ -89,7 +89,7 @@ namespace NSUListView
 			if (layout == Layout.Horizontal) 
 			{
 				basePos.x = -contentRectSize.x / 2 + itemSize.x / 2;
-				offset.x = index * (itemSize.x + pad.x);
+				offset.x = index * (itemSize.x + spacing.x);
 				switch(alignment)
 				{
 				case Alignment.Top:
@@ -103,7 +103,7 @@ namespace NSUListView
 			else 
 			{
 				basePos.y = contentRectSize.y / 2 - itemSize.y / 2;
-				offset.y = -index * (itemSize.y + pad.y);
+				offset.y = -index * (itemSize.y + spacing.y);
 				switch(alignment)
 				{
 				case Alignment.Left:
@@ -125,10 +125,10 @@ namespace NSUListView
 			switch (layout) 
 			{
 			case Layout.Horizontal:
-				size.x = itemSize.x * count + pad.x *( count > 0 ? count -1 : count );
+				size.x = itemSize.x * count + spacing.x *( count > 0 ? count -1 : count );
 				break;
 			case Layout.Vertical:
-				size.y = itemSize.y * count + pad.y * ( count > 0 ? count - 1 : count );
+				size.y = itemSize.y * count + spacing.y * ( count > 0 ? count - 1 : count );
 				break;
 			}
 			return size;
