@@ -23,9 +23,12 @@ namespace NSUListView
 
 	public class USimpleListView : IUListView
 	{
+		[Tooltip("List Item Object, must set")]
+		public GameObject			itemPrefab;
 		public Layout 				layout;
 		public Alignment 			alignment;
-		protected List<GameObject>	lstItems;
+		private List<GameObject>	lstItems;
+		private Vector2				itemSize;
 
 		public override void Init ()
 		{
@@ -41,6 +44,12 @@ namespace NSUListView
 				scrollRect.vertical = true;
 				break;
 			}
+
+			// record the item size
+			IUListItemView itemView = itemPrefab.GetComponent<IUListItemView> ();
+			itemSize = itemView.GetItemSize (0);
+
+			// spawn pool for listitems
 			lstItems = new List<GameObject> ();
 		}
 
@@ -138,13 +147,29 @@ namespace NSUListView
 		{
 			if(index < lstItems.Count)
 			{
+				GameObject go = lstItems[index];
+				if(false == go.activeSelf)
+				{
+					go.SetActive(true);
+				}
 				return lstItems [index];
 			}
 			else 
 			{
-				GameObject go = GameObject.Instantiate(item) as GameObject;
+				GameObject go = GameObject.Instantiate(itemPrefab) as GameObject;
 				lstItems.Add (go);
 				return go;
+			}
+		}
+
+		public override void HideNonuseableItems ()
+		{
+			for (int i = lstData.Count; lstItems != null && i < lstItems.Count; ++i) 
+			{
+				if(lstItems[i].activeSelf)
+				{
+					lstItems[i].SetActive(false);
+				}
 			}
 		}
 	}

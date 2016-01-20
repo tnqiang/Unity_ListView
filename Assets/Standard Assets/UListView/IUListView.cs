@@ -7,8 +7,6 @@ namespace NSUListView
 	[RequireComponent(typeof(ScrollRect))]
 	public abstract class IUListView : MonoBehaviour
 	{
-		[Tooltip("List Item Object, must set")]
-		public GameObject 			item;
 		public Vector2				spacing;
 		public bool					needMask;
 
@@ -16,21 +14,11 @@ namespace NSUListView
 		protected bool				initialized = false;
 		protected RectTransform		content;
 		protected Vector2			scrollRectSize;
-		protected Vector2			itemSize;
 		protected int				lastStartInex = 0;
 		protected List<object>		lstData;
 
 		public virtual void Init()
 		{
-			if (initialized)
-				return;
-
-			if (null == item) 
-			{
-				Debug.LogError("set an listitem first");
-				return;
-			}
-
 			// set attributes of scrollrect
 			scrollRect = GetComponent<ScrollRect> ();
 			scrollRect.onValueChanged.AddListener (OnValueChanged);
@@ -48,8 +36,6 @@ namespace NSUListView
 			// record some sizes
 			RectTransform scrollRectTransform = scrollRect.transform as RectTransform;
 			scrollRectSize = scrollRectTransform.sizeDelta;
-			RectTransform itemRectTransform = item.transform as RectTransform;
-			itemSize = itemRectTransform.sizeDelta;
 
 			// add mask
 			if (needMask) 
@@ -58,13 +44,16 @@ namespace NSUListView
 				image.color = new Color32(0, 0, 0, 5);
 				gameObject.AddComponent(typeof(Mask));
 			}
-
-			initialized = true;
 		}
 
 		public void  SetData(List<object> lstData)
 		{
-			Init ();
+			if (false == initialized) 
+			{
+				Init();
+				initialized = true;
+			}
+
 			this.lstData = lstData;
 			RefreshListView ();
 		}
@@ -99,6 +88,9 @@ namespace NSUListView
 				IUListItemView itemView = go.GetComponent<IUListItemView>();
 				itemView.SetData(lstData[startIndex + i]);
 			}
+
+			// dont show the extra items shown before
+			HideNonuseableItems ();
 		}
 
 		/// <summary>
@@ -129,5 +121,9 @@ namespace NSUListView
 		/// <returns>The item game object.</returns>
 		/// <param name="index">Index.</param>
 		public abstract GameObject	GetItemGameObject(int index);
+		/// <summary>
+		/// Hides the nonuseable items.
+		/// </summary>
+		public abstract	void		HideNonuseableItems();
 	}
 }

@@ -15,5 +15,16 @@ public class TestGridListItem : MonoBehaviour
 			lstData.Add (i);
 		}
 		listView.SetData (lstData);
+		StartCoroutine (DecreateCoroutine ());
+	}
+
+	IEnumerator DecreateCoroutine()
+	{
+		yield return new WaitForSeconds(5);
+		List<object> lstData = new List<object> ();
+		for (int i=0; i<10; ++i) {
+			lstData.Add (i);
+		}
+		listView.SetData (lstData);
 	}
 }

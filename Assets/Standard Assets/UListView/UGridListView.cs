@@ -8,12 +8,15 @@ namespace NSUListView
 {
 	public class UGridListView : IUListView
 	{
+		[Tooltip("List Item Object, must set")]
+		public GameObject			itemPrefab;
 		public Layout 				layout;
 		protected List<GameObject>	lstItems;
 
 		private int 				numPerRow;
 		private	int					numPerColumn;
 		private	Vector2				padding;
+		private Vector2				itemSize;
 
 		public override void Init ()
 		{
@@ -29,7 +32,10 @@ namespace NSUListView
 				scrollRect.vertical = true;
 				break;
 			}
-			lstItems = new List<GameObject> ();
+
+			// record the item size
+			IUListItemView itemView = itemPrefab.GetComponent<IUListItemView> ();
+			itemSize = itemView.GetItemSize (0);
 
 			// record max numbers per row/column
 			numPerRow = (int)(scrollRectSize.x / (itemSize.x + spacing.x));
@@ -50,6 +56,9 @@ namespace NSUListView
 				padding.x = (int)(scrollRectSize.x % itemSize.x) / 2;
 				break;
 			}
+
+			// spawn pool for listitems
+			lstItems = new List<GameObject> ();
 		}
 
 		public override int	GetMaxShowItemNum()
@@ -135,13 +144,29 @@ namespace NSUListView
 		{
 			if(index < lstItems.Count)
 			{
+				GameObject go = lstItems[index];
+				if(false == go.activeSelf)
+				{
+					go.SetActive(true);
+				}
 				return lstItems [index];
 			}
 			else 
 			{
-				GameObject go = GameObject.Instantiate(item) as GameObject;
+				GameObject go = GameObject.Instantiate(itemPrefab) as GameObject;
 				lstItems.Add (go);
 				return go;
+			}
+		}
+		
+		public override void HideNonuseableItems ()
+		{
+			for (int i = lstData.Count; lstItems != null && i < lstItems.Count; ++i) 
+			{
+				if(lstItems[i].activeSelf)
+				{
+					lstItems[i].SetActive(false);
+				}
 			}
 		}
 	}
