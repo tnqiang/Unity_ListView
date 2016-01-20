@@ -20,8 +20,8 @@ This solution provides following conveniences:
 
 ##Plan
 
-1. USimpleListView: provide simple horizontal/vertical layout, one item per row/column (Completed); 
-2. UGridListView: provide grid layout, allow multi item per row/column;
+1. USimpleListView: provides simple horizontal/vertical layout, one item per row/column (Completed);
+2. UGridListView: provides grid horizontal/vertical layout, allowing multi items per row/column (Completed);
 
 ##Author
 tnqiang
