@@ -10,7 +10,6 @@ namespace NSUListView
 	{
 		[Tooltip("List Item Object, must set")]
 		public GameObject			itemPrefab;
-		public Layout 				layout;
 		public Alignment 			alignment;
 		private List<GameObject>	lstItems;
 		private	IUListItemView 		itemView;
@@ -18,7 +17,8 @@ namespace NSUListView
 		public override void Init ()
 		{
 			base.Init ();
-			IUListItemView itemView = itemPrefab.GetComponent<IUListItemView>();
+			lstItems = new List<GameObject> ();
+			itemView = itemPrefab.GetComponent<IUListItemView>();
 		}
 		
 		public override int	GetMaxShowItemNum()
@@ -45,14 +45,14 @@ namespace NSUListView
 				}
 				break;
 			}
-			return max;
+			return max + 1;
 		}
 		
 		public override int GetStartIndex()
 		{
 			Vector2 anchorPosition = content.anchoredPosition;
 			anchorPosition.x *= -1;
-			int index = 0;
+			int index = -1;
 			float sum = 0;
 
 			switch (layout)
@@ -79,7 +79,7 @@ namespace NSUListView
 				{
 					Vector2 itemSize = itemView.GetItemSize(lstData[i]);
 					sum += (itemSize.y + spacing.y);
-					if(sum <= anchorPosition.x)
+					if(sum <= anchorPosition.y)
 					{
 						index = i;
 					}
@@ -91,7 +91,7 @@ namespace NSUListView
 				break;
 			}
 
-			return index;
+			return ++index;
 		}
 		
 		public override Vector2 GetItemAnchorPos(int index)
@@ -103,10 +103,10 @@ namespace NSUListView
 
 			if (layout == Layout.Horizontal) 
 			{
-				basePos.x = -contentRectSize.x / 2 + itemView.GetItemSize(lstData[index]).x / 2;
-				for(int i=0; i<=index; ++i)
+				basePos.x = -contentRectSize.x / 2 - itemView.GetItemSize(lstData[index]).x / 2;
+				for(int i=0; i <= index; ++i)
 				{
-					offset.x += itemView.GetItemSize(lstData[i]).x + spacing.x;
+					offset.x += (itemView.GetItemSize(lstData[i]).x + spacing.x);
 				}
 
 				switch(alignment)
@@ -121,10 +121,10 @@ namespace NSUListView
 			} 
 			else 
 			{
-				basePos.y = contentRectSize.y / 2 - itemView.GetItemSize(lstData[index]).y / 2;
-				for(int i=0; i<=index; ++i)
+				basePos.y = contentRectSize.y / 2 + itemView.GetItemSize(lstData[index]).y / 2;
+				for(int i=0; i <= index; ++i)
 				{
-					offset.y -= itemView.GetItemSize(lstData[i]).y + spacing.y;
+					offset.y -= (itemView.GetItemSize(lstData[i]).y + spacing.y);
 				}
 				switch(alignment)
 				{
@@ -142,6 +142,16 @@ namespace NSUListView
 		public override Vector2 GetContentSize()
 		{
 			Vector2 size = scrollRectSize;
+			switch (layout) 
+			{
+			case Layout.Horizontal:
+				size.x = 0;
+				break;
+			case Layout.Vertical:
+				size.y = 0;
+				break;
+			}
+
 			for (int i=0; i<lstData.Count; ++i) 
 			{
 				if(layout == Layout.Horizontal)

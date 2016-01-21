@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using NSUListView;
 
-public class TestGridListItem : MonoBehaviour
+public class TestListView : MonoBehaviour
 {
-	//public USimpleListView listView;
-	public UGridListView listView;
+	public IUListView listView;
 
 	void Start()
 	{
@@ -16,6 +15,7 @@ public class TestGridListItem : MonoBehaviour
 		}
 		listView.SetData (lstData);
 		StartCoroutine (DecreateCoroutine ());
+		StartCoroutine (DecreateCoroutine2 ());
 	}
 
 	IEnumerator DecreateCoroutine()
@@ -23,6 +23,16 @@ public class TestGridListItem : MonoBehaviour
 		yield return new WaitForSeconds(5);
 		List<object> lstData = new List<object> ();
 		for (int i=0; i<10; ++i) {
+			lstData.Add (i);
+		}
+		listView.SetData (lstData);
+	}
+
+	IEnumerator DecreateCoroutine2()
+	{
+		yield return new WaitForSeconds(10);
+		List<object> lstData = new List<object> ();
+		for (int i=0; i<50; ++i) {
 			lstData.Add (i);
 		}
 		listView.SetData (lstData);
