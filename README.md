@@ -22,6 +22,7 @@ This solution provides following conveniences:
 
 1. USimpleListView: provides simple horizontal/vertical layout, one item per row/column (Completed);
 2. UGridListView: provides grid horizontal/vertical layout, allowing multi items per row/column (Completed);
+3. USimpleDiffSizeListView: provides simple horizontal/vertical layout, one item per row/column, each item has a different size (Completed).
 
 ##Author
 tnqiang
