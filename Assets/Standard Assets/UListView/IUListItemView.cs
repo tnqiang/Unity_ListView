@@ -9,7 +9,7 @@ namespace NSUListView
 
 		public abstract void SetData(object data);
 
-		public virtual Vector2 GetItemSize(int index)
+		public virtual Vector2 GetItemSize(object data)
 		{
 			if (null == rectTransform) 
 			{

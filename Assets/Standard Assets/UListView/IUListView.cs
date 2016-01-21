@@ -3,10 +3,17 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace NSUListView
-{
+{	
+	public enum Layout
+	{
+		Vertical,
+		Horizontal
+	}
+
 	[RequireComponent(typeof(ScrollRect))]
 	public abstract class IUListView : MonoBehaviour
 	{
+		public Layout 				layout;
 		public Vector2				spacing;
 		public bool					needMask;
 
@@ -22,6 +29,19 @@ namespace NSUListView
 			// set attributes of scrollrect
 			scrollRect = GetComponent<ScrollRect> ();
 			scrollRect.onValueChanged.AddListener (OnValueChanged);
+
+			// set the scroll direction
+			switch (layout) 
+			{
+			case Layout.Horizontal:
+				scrollRect.horizontal = true;
+				scrollRect.vertical = false;
+				break;
+			case Layout.Vertical:
+				scrollRect.horizontal = false;
+				scrollRect.vertical = true;
+				break;
+			}
 
 			// add a scrollrect content
 			GameObject go = new GameObject ();

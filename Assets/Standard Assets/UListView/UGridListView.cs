@@ -10,7 +10,6 @@ namespace NSUListView
 	{
 		[Tooltip("List Item Object, must set")]
 		public GameObject			itemPrefab;
-		public Layout 				layout;
 		protected List<GameObject>	lstItems;
 
 		private int 				numPerRow;
@@ -21,21 +20,10 @@ namespace NSUListView
 		public override void Init ()
 		{
 			base.Init ();
-			switch (layout) 
-			{
-			case Layout.Horizontal:
-				scrollRect.horizontal = true;
-				scrollRect.vertical = false;
-				break;
-			case Layout.Vertical:
-				scrollRect.horizontal = false;
-				scrollRect.vertical = true;
-				break;
-			}
 
 			// record the item size
 			IUListItemView itemView = itemPrefab.GetComponent<IUListItemView> ();
-			itemSize = itemView.GetItemSize (0);
+			itemSize = itemView.GetItemSize (null);
 
 			// record max numbers per row/column
 			numPerRow = (int)(scrollRectSize.x / (itemSize.x + spacing.x));
@@ -47,15 +35,6 @@ namespace NSUListView
 
 			// to make items center aligned
 			padding = Vector2.zero;
-			switch(layout)
-			{
-			case Layout.Horizontal:
-				padding.y = -(int)(scrollRectSize.y % itemSize.y) / 2;
-				break;
-			case Layout.Vertical:
-				padding.x = (int)(scrollRectSize.x % itemSize.x) / 2;
-				break;
-			}
 
 			// spawn pool for listitems
 			lstItems = new List<GameObject> ();

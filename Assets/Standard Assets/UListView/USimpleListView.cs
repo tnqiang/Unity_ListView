@@ -6,12 +6,6 @@ using System;
 
 namespace NSUListView
 {
-	public enum Layout
-	{
-		Vertical,
-		Horizontal
-	}
-	
 	public enum Alignment
 	{
 		Left,
@@ -25,7 +19,6 @@ namespace NSUListView
 	{
 		[Tooltip("List Item Object, must set")]
 		public GameObject			itemPrefab;
-		public Layout 				layout;
 		public Alignment 			alignment;
 		private List<GameObject>	lstItems;
 		private Vector2				itemSize;
@@ -33,21 +26,10 @@ namespace NSUListView
 		public override void Init ()
 		{
 			base.Init ();
-			switch (layout) 
-			{
-			case Layout.Horizontal:
-				scrollRect.horizontal = true;
-				scrollRect.vertical = false;
-				break;
-			case Layout.Vertical:
-				scrollRect.horizontal = false;
-				scrollRect.vertical = true;
-				break;
-			}
 
 			// record the item size
 			IUListItemView itemView = itemPrefab.GetComponent<IUListItemView> ();
-			itemSize = itemView.GetItemSize (0);
+			itemSize = itemView.GetItemSize (null);
 
 			// spawn pool for listitems
 			lstItems = new List<GameObject> ();
