@@ -51,11 +51,12 @@ namespace NSUListView
 			content.pivot = new Vector2 (0, 1);
 			content.anchorMin = content.anchorMax = content.pivot;
 			content.anchoredPosition = Vector2.zero;
+			content.localScale = Vector3.one;
 			scrollRect.content = content;
 
 			// record some sizes
 			RectTransform scrollRectTransform = scrollRect.transform as RectTransform;
-			scrollRectSize = scrollRectTransform.sizeDelta;
+			scrollRectSize = scrollRectTransform.rect.size;
 
 			// add mask
 			if (needMask) 
@@ -98,13 +99,16 @@ namespace NSUListView
 
 			// set the item postion and data
 			int startIndex = GetStartIndex ();
-			for (int i=0; i<GetMaxShowItemNum() && startIndex + i < lstData.Count; ++i)
+			if (startIndex < 0)	startIndex = 0;
+
+			for (int i=0; i<GetCurrentShowItemNum(); ++i)
 			{
 				GameObject go = GetItemGameObject(i);
 				RectTransform trans = go.transform as RectTransform;
 				trans.SetParent(content);
 				trans.pivot = trans.anchorMin = trans.anchorMax = new Vector2(0.5f, 0.5f);
 				trans.anchoredPosition = GetItemAnchorPos(startIndex + i);
+				trans.localScale = Vector3.one;
 				IUListItemView itemView = go.GetComponent<IUListItemView>();
 				itemView.SetData(lstData[startIndex + i]);
 			}
@@ -113,6 +117,17 @@ namespace NSUListView
 			HideNonuseableItems ();
 		}
 
+		/// <summary>
+		/// Gets the current show item number.
+		/// </summary>
+		/// <returns>The current show item number.</returns>
+		protected int 				GetCurrentShowItemNum()
+		{
+			int startIndex = GetStartIndex ();
+			int maxShowNum = GetMaxShowItemNum ();
+			int maxItemNum = lstData.Count - startIndex;
+			return maxShowNum < maxItemNum ? maxShowNum : maxItemNum;
+		}
 		/// <summary>
 		/// Gets the max show item number.
 		/// </summary>

@@ -66,7 +66,7 @@ namespace NSUListView
 				index = (int)(anchorPosition.x / (itemSize.x + spacing.x));
 				break;
 			}
-
+			if (index < 0)	index = 0;
 			return index;
 		}
 
@@ -116,7 +116,7 @@ namespace NSUListView
 			switch (layout) 
 			{
 			case Layout.Horizontal:
-				size.x = itemSize.x * count + spacing.x *( count > 0 ? count -1 : count );
+				size.x = itemSize.x * count + spacing.x *( count > 0 ? count - 1 : count );
 				break;
 			case Layout.Vertical:
 				size.y = itemSize.y * count + spacing.y * ( count > 0 ? count - 1 : count );
@@ -146,7 +146,7 @@ namespace NSUListView
 
 		public override void HideNonuseableItems ()
 		{
-			for (int i = lstData.Count; lstItems != null && i < lstItems.Count; ++i) 
+			for (int i = GetCurrentShowItemNum(); lstItems != null && i < lstItems.Count; ++i) 
 			{
 				if(lstItems[i].activeSelf)
 				{

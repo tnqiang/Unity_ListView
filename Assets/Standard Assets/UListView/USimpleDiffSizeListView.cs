@@ -90,6 +90,7 @@ namespace NSUListView
 				}
 				break;
 			}
+			if (index < -1)	index = -1;
 
 			return ++index;
 		}

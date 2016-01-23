@@ -71,7 +71,7 @@ namespace NSUListView
 				index = (int)(anchorPosition.x / (itemSize.x + spacing.x)) * numPerColumn;
 				break;
 			}
-
+			if (index < 0)	index = 0;
 			return index;
 		}
 
