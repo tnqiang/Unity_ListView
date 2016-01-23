@@ -51,11 +51,12 @@ namespace NSUListView
 			content.pivot = new Vector2 (0, 1);
 			content.anchorMin = content.anchorMax = content.pivot;
 			content.anchoredPosition = Vector2.zero;
+			content.localScale = Vector3.one;
 			scrollRect.content = content;
 
 			// record some sizes
 			RectTransform scrollRectTransform = scrollRect.transform as RectTransform;
-			scrollRectSize = scrollRectTransform.sizeDelta;
+			scrollRectSize = scrollRectTransform.rect.size;
 
 			// add mask
 			if (needMask) 
@@ -105,6 +106,7 @@ namespace NSUListView
 				trans.SetParent(content);
 				trans.pivot = trans.anchorMin = trans.anchorMax = new Vector2(0.5f, 0.5f);
 				trans.anchoredPosition = GetItemAnchorPos(startIndex + i);
+				trans.localScale = Vector3.one;
 				IUListItemView itemView = go.GetComponent<IUListItemView>();
 				itemView.SetData(lstData[startIndex + i]);
 			}
