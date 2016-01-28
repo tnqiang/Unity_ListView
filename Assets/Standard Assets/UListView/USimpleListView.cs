@@ -54,7 +54,9 @@ namespace NSUListView
 		public override int GetStartIndex()
 		{
 			Vector2 anchorPosition = content.anchoredPosition;
-			anchorPosition.x *= -1;
+			// because the anchor is relative to the left-top corner of the scrollview
+			// so the passed x is on the left, the passed y is on the top
+			anchorPosition.x *= -1;	
 			int index = 0;
 
 			switch (layout)
@@ -153,6 +155,11 @@ namespace NSUListView
 					lstItems[i].SetActive(false);
 				}
 			}
+		}
+
+		public override Vector2		GetItemSize(int index)
+		{
+			return itemSize;
 		}
 	}
 }

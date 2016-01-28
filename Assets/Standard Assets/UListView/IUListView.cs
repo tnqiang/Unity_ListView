@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 namespace NSUListView
 {	
@@ -11,7 +12,7 @@ namespace NSUListView
 	}
 
 	[RequireComponent(typeof(ScrollRect))]
-	public abstract class IUListView : MonoBehaviour
+	public abstract class IUListView : MonoBehaviour, IPointerClickHandler
 	{
 		public Layout 				layout;
 		public Vector2				spacing;
@@ -121,13 +122,57 @@ namespace NSUListView
 		/// Gets the current show item number.
 		/// </summary>
 		/// <returns>The current show item number.</returns>
-		protected int 				GetCurrentShowItemNum()
+		protected int GetCurrentShowItemNum()
 		{
 			int startIndex = GetStartIndex ();
 			int maxShowNum = GetMaxShowItemNum ();
 			int maxItemNum = lstData.Count - startIndex;
 			return maxShowNum < maxItemNum ? maxShowNum : maxItemNum;
 		}
+
+		/// <summary>
+		/// Raises the pointer enter event.
+		/// </summary>
+		/// <param name="eventData">Event data.</param>
+		public void OnPointerClick(PointerEventData eventData)
+		{
+			RectTransform rectTrans = scrollRect.transform as RectTransform;
+			Vector3[] corners = new Vector3[4];
+			rectTrans.GetWorldCorners (corners);
+
+			//get the pos relative to left-top corner of the scrollview
+			Vector2 clickPos =  eventData.position - new Vector2 (corners [1].x, corners [1].y);
+			Vector2 anchorPosition = -content.anchoredPosition;
+
+			anchorPosition += clickPos;
+			anchorPosition.x -= content.rect.size.x / 2;
+			anchorPosition.y += content.rect.size.y / 2;
+
+			// set the item postion and data
+			int startIndex = GetStartIndex ();
+			if (startIndex < 0)	startIndex = 0;
+			
+			for (int i=0; i<GetCurrentShowItemNum(); ++i)
+			{
+				Vector2 itemAnchorPos = GetItemAnchorPos(startIndex + i);
+				Vector2 itemSize = GetItemSize(startIndex + i);
+				if(Mathf.Abs(anchorPosition.x - itemAnchorPos.x) <= itemSize.x/2 &&
+				   Mathf.Abs(anchorPosition.y - itemAnchorPos.y) <= itemSize.y/2)
+				{
+					OnClick(startIndex + i);
+					break;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Raises the click event.
+		/// </summary>
+		/// <param name="pos">Position.</param>
+		public virtual void OnClick(int index)
+		{
+		}
+
 		/// <summary>
 		/// Gets the max show item number.
 		/// </summary>
@@ -160,5 +205,11 @@ namespace NSUListView
 		/// Hides the nonuseable items.
 		/// </summary>
 		public abstract	void		HideNonuseableItems();
+		/// <summary>
+		/// Gets the size of the item of specified index
+		/// </summary>
+		/// <returns>The item size.</returns>
+		/// <param name="index">Index.</param>
+		public abstract Vector2		GetItemSize(int index);
 	}
 }

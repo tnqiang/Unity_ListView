@@ -196,5 +196,10 @@ namespace NSUListView
 				}
 			}
 		}
+
+		public override Vector2		GetItemSize(int index)
+		{
+			return itemView.GetItemSize(index);
+		}
 	}
 }
