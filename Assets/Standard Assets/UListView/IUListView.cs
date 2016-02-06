@@ -88,11 +88,6 @@ namespace NSUListView
 			{
 				RefreshListView();
 				lastStartInex = startIndex;
-
-				int dataCount = GetDataCount();
-				float progress = (startIndex + 1)/(float)dataCount;
-				progress = Mathf.Clamp01(progress);
-				OnProgress(progress);
 			}
 		}
 
@@ -121,6 +116,14 @@ namespace NSUListView
 
 			// dont show the extra items shown before
 			HideNonuseableItems ();
+
+			// set the progress: 
+			int dataCount = GetDataCount();
+			dataCount -= (GetMaxShowItemNum ()-2);
+			if (dataCount < 1) dataCount = 1;
+			float progress = (startIndex + 1)/(float)dataCount;
+			progress = Mathf.Clamp01(progress);
+			OnProgress(progress);
 		}
 
 		/// <summary>
