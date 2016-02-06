@@ -88,6 +88,11 @@ namespace NSUListView
 			{
 				RefreshListView();
 				lastStartInex = startIndex;
+
+				int dataCount = GetDataCount();
+				float progress = (startIndex + 1)/(float)dataCount;
+				progress = Mathf.Clamp01(progress);
+				OnProgress(progress);
 			}
 		}
 
@@ -171,6 +176,26 @@ namespace NSUListView
 		/// <param name="pos">Position.</param>
 		public virtual void OnClick(int index)
 		{
+		}
+
+		/// <summary>
+		/// Raises the progress event when progress change
+		/// </summary>
+		/// <param name="progress">Progress.</param>
+		public virtual void OnProgress(float progress)
+		{
+		}
+
+		/// <summary>
+		/// Gets the data count.
+		/// default return 1
+		/// </summary>
+		/// <returns>The data count.</returns>
+		public virtual int GetDataCount()
+		{
+			if (null == lstData
+				return 1;
+			else return lstData.Count;
 		}
 
 		/// <summary>
