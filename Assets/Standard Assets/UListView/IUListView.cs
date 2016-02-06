@@ -193,8 +193,7 @@ namespace NSUListView
 		/// <returns>The data count.</returns>
 		public virtual int GetDataCount()
 		{
-			if (null == lstData
-				return 1;
+			if (null == lstData)return 1;
 			else return lstData.Count;
 		}
 
