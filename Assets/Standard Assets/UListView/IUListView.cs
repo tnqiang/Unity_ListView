@@ -24,6 +24,8 @@ namespace NSUListView
 		protected Vector2			scrollRectSize;
 		protected int				lastStartInex = 0;
 		protected List<object>		lstData;
+		protected Vector2			leftTopCorner = Vector2.zero;
+		private bool				leftTopCornerInit = false;
 
 		public virtual void Init()
 		{
@@ -139,17 +141,34 @@ namespace NSUListView
 		}
 
 		/// <summary>
+		/// Gets the top left corner screen point.
+		/// </summary>
+		/// <returns>The top left corner screen point.</returns>
+		private Vector2 GetTopLeftCornerScreenPoint()
+		{
+			if (false == leftTopCornerInit) 
+			{
+				RectTransform rectTrans = scrollRect.transform as RectTransform;
+				Vector3[] corners = new Vector3[4];
+				rectTrans.GetWorldCorners (corners);
+				Canvas canvas = GetComponentInParent<Canvas> ();
+				if (null != canvas && null != canvas.worldCamera && RenderMode.ScreenSpaceOverlay != canvas.renderMode) {
+					Camera cam = canvas.worldCamera;
+					corners [1] = cam.WorldToScreenPoint (corners [1]);
+				}
+				leftTopCorner = new Vector2 (corners [1].x, corners [1].y);
+			}
+			return leftTopCorner;
+		}
+
+		/// <summary>
 		/// Raises the pointer enter event.
 		/// </summary>
 		/// <param name="eventData">Event data.</param>
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			RectTransform rectTrans = scrollRect.transform as RectTransform;
-			Vector3[] corners = new Vector3[4];
-			rectTrans.GetWorldCorners (corners);
-
 			//get the pos relative to left-top corner of the scrollview
-			Vector2 clickPos =  eventData.position - new Vector2 (corners [1].x, corners [1].y);
+			Vector2 clickPos =  eventData.position - GetTopLeftCornerScreenPoint();
 			Vector2 anchorPosition = -content.anchoredPosition;
 
 			anchorPosition += clickPos;
