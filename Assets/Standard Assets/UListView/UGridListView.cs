@@ -72,6 +72,7 @@ namespace NSUListView
 				break;
 			}
 			if (index < 0)	index = 0;
+            if (index >= lstData.Count) index = 0;
 			return index;
 		}
 

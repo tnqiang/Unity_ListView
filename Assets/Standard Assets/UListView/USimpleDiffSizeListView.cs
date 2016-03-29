@@ -90,9 +90,11 @@ namespace NSUListView
 				}
 				break;
 			}
-			if (index < -1)	index = -1;
+            ++index;
+			if (index < 0)	index = 0;
+            if (index >= lstData.Count) index = 0;
 
-			return ++index;
+			return index;
 		}
 		
 		public override Vector2 GetItemAnchorPos(int index)

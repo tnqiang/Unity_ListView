@@ -69,6 +69,7 @@ namespace NSUListView
 				break;
 			}
 			if (index < 0)	index = 0;
+            if (index >= lstData.Count) index = 0;
 			return index;
 		}
 
@@ -150,10 +151,10 @@ namespace NSUListView
 		{
 			for (int i = GetCurrentShowItemNum(); lstItems != null && i < lstItems.Count; ++i) 
 			{
-				if(lstItems[i].activeSelf)
-				{
-					lstItems[i].SetActive(false);
-				}
+                if (lstItems[i].activeSelf)
+                {
+                    lstItems[i].SetActive(false);
+                }
 			}
 		}
 
