@@ -92,7 +92,7 @@ namespace NSUListView
 			} 
 			else 
 			{
-				int offsetIndex = index % numPerColumn;
+                int offsetIndex = index % numPerRow;
 				basePos.y = contentRectSize.y / 2 - itemSize.y / 2;
 				offset.y = -(index / numPerRow) * (itemSize.y + spacing.y);
 				offset.x = -(contentRectSize.x - itemSize.x)/2 + offsetIndex * (itemSize.x + spacing.x);
