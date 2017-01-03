@@ -42,10 +42,10 @@ namespace NSUListView
 			switch (layout) 
 			{
 			case Layout.Horizontal:
-				max = (int)(scrollRectSize.x / itemSize.x) + 2;
+				max = (int) Mathf.Ceil(scrollRectSize.x / (itemSize.x + spacing.x)) + 1;
 				break;
 			case Layout.Vertical:
-				max = (int)(scrollRectSize.y / itemSize.y) + 2;
+				max = (int) Mathf.Ceil(scrollRectSize.y / (itemSize.y + spacing.y)) + 1;
 				break;
 			}
 			return max;
